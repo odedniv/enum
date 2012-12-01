@@ -10,10 +10,16 @@ class EnumValue < BasicObject
   end
 
   def ==(other)
-    if other.is_a?(::Symbol)
-      @name == other
-    else
-      @value == other
+    case other
+      when ::Symbol then @name  == other
+      else               @value == other
+    end
+  end
+
+  def ===(other)
+    case other
+      when ::Symbol then @name  === other
+      else               @value === other
     end
   end
 
@@ -32,8 +38,7 @@ class EnumValue < BasicObject
 
   def method_missing(method, *args, &block)
     match = method.to_s.match(/^(.+)\?$/)
-    return super if match.nil?
-    enum_name = match[1].to_sym
+    enum_name = match[1].to_sym if match
     if @enum.names.include?(enum_name)
       @name.==(enum_name, *args, &block)
     elsif @value.respond_to?(method)
@@ -92,10 +97,14 @@ class Enum
   end
 end
 
-class Object
-  def self.enum(name, hash)
+module EnumGenerator
+  def enum(name, hash)
     const_set name, Enum.new(name, hash, self)
   end
+end
+
+class Object
+  extend EnumGenerator
 end
 
 module EnumColumns
