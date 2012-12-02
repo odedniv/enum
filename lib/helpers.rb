@@ -5,7 +5,7 @@ module EnumGenerator
 end
 
 class Object
-  extend EnumGenerator
+  include EnumGenerator
 end
 
 module EnumColumns
@@ -14,11 +14,14 @@ module EnumColumns
   #   Creating a validation for the attribute so it must have valid enum values (allowing nil).
   #   If :scoped => true, generates scopes and questioning methods for every name in the enum.
   # If given a enum name (a symbol) and hash, also creates the enum.
-  def enum_column(attr, name_or_enum, hash={})
-    scoped = hash.delete(:scoped)
+  def enum_column(attr, name_or_enum, options={}, hash=nil)
     # generating or getting the enum
     if name_or_enum.is_a?(Symbol)
+      # the first hash is either options or the hash if the options are missing
+      hash, options = options, {} if hash.nil?
+      # generating the enum if the hash is not empty
       enum name_or_enum, hash if hash.any?
+
       e = const_get(name_or_enum)
     else
       e = name_or_enum
@@ -28,8 +31,8 @@ module EnumColumns
     # attribute writer
     define_method("#{attr}=") { |v| v.nil? ? super(v) : super(e[v]) }
     # validation
-    validates attr, :inclusion => { :in => e.values }, :allow_nil => true
-    if scoped
+    validates_inclusion_of attr, :in => e.values, :allow_nil => true
+    if options[:scoped]
       # generating scopes and questioning methods
       e.by_name.each do |n, ev|
         scope n, where(attr => ev)
