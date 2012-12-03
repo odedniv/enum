@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.version     = "0.0.1"
   s.authors     = ["Oded Niv"]
   s.email       = ["oded.niv@gmail.com"]
-  s.homepage    = ""
+  s.homepage    = "https://github.com/toplex/enum"
   s.summary     = %q{Enum implementation}
   s.description = %q{Awesome enum implementation that gives integer values with a special wrapping.}
 

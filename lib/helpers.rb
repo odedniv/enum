@@ -1,6 +1,6 @@
 module EnumGenerator
   def enum(name, hash)
-    const_set name, Enum.new(name, hash, self)
+    const_set name, Enum.new(name, self, hash)
   end
 end
 
