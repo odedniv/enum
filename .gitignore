@@ -1,4 +1,4 @@
-enum-*.gem
+*.gem
 *.rbc
 *.sassc
 .sass-cache

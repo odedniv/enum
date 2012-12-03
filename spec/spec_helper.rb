@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'bundler/setup'
 
-require 'enum'
+require 'inspected_enum'
 
 RSpec.configure do |config|
 end
