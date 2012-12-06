@@ -1,0 +1,11 @@
+require 'enum'
+
+module Enum::Helpers::EnumGenerator
+  def enum(name, hash)
+    const_set name, Enum.new(name, self, hash)
+  end
+end
+
+class Object
+  include Enum::Helpers::EnumGenerator
+end

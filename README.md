@@ -95,7 +95,7 @@ Now the `color` column is always read and written using the enum value feature:
 
 This also creates a `validates\_inclusion\_of` with `allow\_nil => true` to prevent having bad values.
 
-Adding another `:scoped => true` option before the enum values allows automatic generation of scopes and question
+Adding a `:scoped => true` option before the enum values allows automatic generation of scopes and question
 methods on the model as follows:
 
     class Car < ActiveRecord::Base
@@ -105,6 +105,16 @@ methods on the model as follows:
     => "SELECT `cars`.* FROM `cars` WHERE `cars`.`color` = 1"
     Car.last.red?
     => true
+
+You can also use another class's enum for your class with enum\_column (including generated methods) like so:
+
+    class Motorcycle < ActiveRecord::Base
+      enum_column :color, Car::COLORS, { :scoped => true }
+    end
+    Motorcycle.black.to_sql
+    => "SELECT `motorcycles`.* FROM `motorcycles` WHERE `motorcycles`.`color` = 2"
+    Motorcycle.black
+    => Car::COLORS.black
 
 Last but not least, automatic translation lookup.
 Given the following `config/locales/en.yml`:

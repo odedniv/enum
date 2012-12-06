@@ -1,4 +1,4 @@
-class EnumValue < BasicObject
+class Enum::EnumValue < BasicObject
   attr_reader :enum, :name, :value
 
   def initialize(enum, name, value)
