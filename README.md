@@ -1,6 +1,6 @@
-# Enum
+# yinum
 
-A straightforward implementation of an enum for Ruby (on Rails).
+A yummy straightforward implementation of an enum for Ruby (on Rails).
 
 The straightforward usage looks like this:
 
@@ -12,11 +12,11 @@ The straightforward usage looks like this:
 
 ## Getting started
 
-    $ gem install enum
+    $ gem install yinum
 
 Or in your Gemfile:
 
-    gem "enum"
+    gem "yinum"
 
 ## Usage
 
