@@ -2,7 +2,7 @@
 $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
-  s.name        = "inspected_enum"
+  s.name        = "yinum"
   s.version     = "0.0.1"
   s.authors     = ["Oded Niv"]
   s.email       = ["oded.niv@gmail.com"]
@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.summary     = %q{Enum implementation}
   s.description = %q{Awesome enum implementation that gives integer values with a special wrapping.}
 
-  s.rubyforge_project = "inspected_enum"
+  s.rubyforge_project = "yinum"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
