@@ -137,7 +137,7 @@ If the translation is missing, it fallbacks to the translation without the class
 
 All enum names (usually CONSTANT\_LIKE) and parent class names are converted to snakecase.
 
-== Limitations
+## Limitations
 
 Since the `===` operator is called on the when value, this syntax cannot be used:
 
