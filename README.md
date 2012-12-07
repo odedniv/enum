@@ -163,3 +163,9 @@ The following should be used instead:
 
 This is because I had trouble overriding the `===` operator of the Symbol class.
 
+Another limitation is the following:
+
+    Car.where(:color => :red) # bad
+    Car.where(:color => Car::COLORS.red) # good
+
+You may use the EnumValue object for anything, but don't get smart using the key.
