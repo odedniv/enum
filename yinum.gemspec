@@ -3,7 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = "yinum"
-  s.version     = "1.0.0"
+  s.version     = "1.1.0"
   s.authors     = ["Oded Niv"]
   s.email       = ["oded.niv@gmail.com"]
   s.homepage    = "https://github.com/toplex/enum"

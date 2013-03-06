@@ -1,37 +1,17 @@
 require 'spec_helper'
 
-class UsesEnumColumns < Hash # to allow setting 'attributes'
-  extend Enum::Helpers::EnumColumns
+class UsesEnumAttribute < Hash # to allow setting 'attributes'
+  extend Enum::Helpers::EnumAttribute
 
   class << self
     # enum definition
-    def define_enum(attr, name_or_enum, options={}, hash=nil)
+    def define_enum(attr, name_or_enum, options = {}, hash = nil)
       @enum_name = name_or_enum.is_a?(Enum) ? name_or_enum.name : name_or_enum
-      reset_mocks
-      enum_column attr, name_or_enum, options, hash
+      attr_enum attr, name_or_enum, options, hash
     end
     def undefine_enum
       remove_const :COLORS
     end
-    def reset_mocks
-      @inclusion_validations = []
-      @scopes = []
-    end
-
-    # mocking validates_inclusion_of
-    attr_reader :inclusion_validations
-    def validates_inclusion_of(*attributes)
-      @inclusion_validations << attributes
-    end
-    # mocking scopes
-    def where(*attributes)
-      { :where => attributes }
-    end
-    attr_reader :scopes
-    def scope(*attributes)
-      @scopes << attributes
-    end
-
   end
 
   # mocking setters
@@ -46,23 +26,23 @@ class UsesEnumColumns < Hash # to allow setting 'attributes'
   end
 end
 
-class UsesAnoterEnumColumns < UsesEnumColumns
+class UsesAnoterEnumAttribute < UsesEnumAttribute
 end
 
 def enum_generator_specs
   describe Enum::Helpers::EnumGenerator do
-    subject { UsesEnumColumns::COLORS }
+    subject { UsesEnumAttribute::COLORS }
 
     its(:name) { should == :COLORS }
-    its(:klass) { should == UsesEnumColumns }
+    its(:klass) { should == UsesEnumAttribute }
     its(:by_name) { should == { :red => 1, :blue => 2 } }
   end # describe Enum::Helpers::EnumGenerator
 end
 
-def enum_columns_attribute_specs
+def enum_attribute_specs
   context "attributes" do
     before do
-      @record = UsesEnumColumns.new
+      @record = UsesEnumAttribute.new
       @record[:color] = :unknown
     end
     subject { @record }
@@ -105,39 +85,28 @@ def enum_columns_attribute_specs
       end
     end # context "getter"
   end # context "attribute"
-
-  context "validations" do
-    its(:inclusion_validations) { should have(1).item }
-    its(:inclusion_validations) { should include([:color, :in => [1, 2], :allow_nil => true]) }
-  end # context "validations"
 end
 
-describe Enum::Helpers::EnumColumns do
-  after { UsesEnumColumns.undefine_enum }
-  subject { UsesEnumColumns }
+describe Enum::Helpers::EnumAttribute do
+  after { UsesEnumAttribute.undefine_enum }
+  subject { UsesEnumAttribute }
 
-  context "not scoped" do
-    before { UsesEnumColumns.define_enum(:color, :COLORS, :red => 1, :blue => 2) }
-
-    enum_generator_specs
-    enum_columns_attribute_specs
-  end # context "not scoped"
-
-  context "scoped" do
-    before { UsesEnumColumns.define_enum(:color, :COLORS, { :scoped => true }, :red => 1, :blue => 2) }
+  context "not qualifier" do
+    before { UsesEnumAttribute.define_enum(:color, :COLORS, :red => 1, :blue => 2) }
 
     enum_generator_specs
-    enum_columns_attribute_specs
+    enum_attribute_specs
+  end # context "not qualifier"
 
-    context "scopes" do
-      its(:scopes) { should have(2).items }
-      its(:scopes) { should include([:red, :where => [:color => 1]]) }
-      its(:scopes) { should include([:blue, :where => [:color => 2]]) }
-    end # context "scopes"
+  context "qualifier" do
+    before { UsesEnumAttribute.define_enum(:color, :COLORS, { :qualifier => true }, :red => 1, :blue => 2) }
+
+    enum_generator_specs
+    enum_attribute_specs
 
     context "questions" do
       before do
-        @record = UsesEnumColumns.new
+        @record = UsesEnumAttribute.new
         @record.color = :red
       end
       subject { @record }
@@ -145,15 +114,15 @@ describe Enum::Helpers::EnumColumns do
       it { should be_red }
       it { should_not be_blue }
     end # context "questions"
-  end # context "scoped"
+  end # context "qualifier"
 
   context "use another enum" do
     before do
-      UsesEnumColumns.define_enum(:color, :COLORS, { :scoped => true }, :red => 1, :blue => 2)
-      UsesAnoterEnumColumns.define_enum(:color, UsesEnumColumns::COLORS)
+      UsesEnumAttribute.define_enum(:color, :COLORS, { :qualifier => true }, :red => 1, :blue => 2)
+      UsesAnoterEnumAttribute.define_enum(:color, UsesEnumAttribute::COLORS)
     end
 
     enum_generator_specs
-    enum_columns_attribute_specs
+    enum_attribute_specs
   end
-end # describe Enum::Helpers::EnumColumns
+end # describe Enum::Helpers::EnumAttribute
