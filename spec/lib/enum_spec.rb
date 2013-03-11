@@ -1,6 +1,15 @@
 require 'spec_helper'
 
 describe Enum do
+  context "accessors" do
+    before { @enum = Enum.new(:MY_COLORS, :red => 1, :blue => 2) }
+
+    specify { @enum.red.should == 1 }
+    specify { @enum[:red].should == 1 }
+    specify { expect { @enum[:black] }.to raise_error(StandardError) }
+    specify { @enum[:red, :blue].should == [1, 2] }
+  end # context "accessors
+
   context "keys on left and right" do
     before { @enum = Enum.new(:MY_COLORS, :red => 1, 2 => :blue) }
     subject { @enum }

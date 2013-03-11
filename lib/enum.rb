@@ -28,7 +28,10 @@ class Enum
     @by_name.each_value(&block)
   end
 
-  def [](name_or_value)
+  def [](*name_or_values)
+    return name_or_values.map { |name_or_value| self[name_or_value] } if name_or_values.length > 1
+
+    name_or_value = name_or_values.first
     ev = @by_name[name_or_value] || @by_value[name_or_value]
     raise "#{inspect} does not know #{name_or_value.inspect}" if ev.nil?
     ev

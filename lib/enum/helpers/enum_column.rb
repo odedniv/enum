@@ -19,7 +19,6 @@ module Enum::Helpers::EnumColumn
       # generating scopes and questioning methods
       e.by_name.each do |n, ev|
         scope n, where(attr => ev)
-        define_method("#{n}?") { self[attr] == ev }
       end
     end
 
