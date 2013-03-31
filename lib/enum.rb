@@ -15,7 +15,7 @@ class Enum
     @klass ? "#{@klass.name}::#{@name}" : @name.to_s
   end
   def inspect
-    "#{to_s}(#{@by_name.map { |n,ev| "#{n.inspect} => #{ev.value.inspect}"}.join(", ")})"
+    "#{to_s}(#{@by_name.map { |n, ev| "#{n.inspect} => #{ev.value.inspect}"}.join(", ")})"
   end
 
   def names
@@ -35,6 +35,10 @@ class Enum
     ev = @by_name_s[name_or_value.to_s] || @by_value_s[name_or_value.to_s]
     raise "#{inspect} does not know #{name_or_value.inspect}" if ev.nil?
     ev
+  end
+
+  def options
+    Hash[map { |ev| [ev.t, ev.name] }]
   end
 
   private
