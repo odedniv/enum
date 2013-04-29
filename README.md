@@ -187,13 +187,13 @@ All enum names (usually CONSTANT\_LIKE) and parent class names are converted to 
 Since the `===` operator is called on the when value, this syntax cannot be used:
 
     case fruit
-      when :red then "This will never happen!"
+      when :apple then "This will never happen!"
     end
 
 The following should be used instead:
 
     case fruit
-      when FRUITS.red then "This is better..."
+      when FRUITS.apple then "This is better..."
     end
 
 This is because I had trouble overriding the `===` operator of the Symbol class.
@@ -205,3 +205,11 @@ Another limitation is the following:
 
 You may use the EnumValue object for anything, but don't get smart using the key.
 If the EnumValue doesn't work in a spot, use #name (in `options_for_select`) or #value (in `update_all`).
+
+## Also
+
+EnumValue also works well with [nil_or](https://github.com/toplex/nil_or):
+
+    fruit = FRUITS.apple
+    fruit.nil_or.t
+    => "Green Apple"
