@@ -69,4 +69,12 @@ class Enum::EnumValue < BasicObject
       tr("-", "_").
       downcase
   end
+
+  # Useful modules
+  begin
+    require 'nil_or'
+  rescue ::LoadError
+  else
+    include ::NilOr
+  end
 end
