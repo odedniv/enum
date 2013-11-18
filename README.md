@@ -49,6 +49,12 @@ Getting enum values:
     => FRUITS.apple
     FRUITS[1]
     => FRUITS.apple
+    FRUITS['orange']
+    => FRUITS.orange
+    FRUITS['2']
+    => FRUITS.orange
+    FRUITS['orange', '1']
+    => [FRUITS.orange, FRUITS.apple]
 
 Comparing enum values:
 
@@ -72,6 +78,33 @@ The enum value is actually a delegate to the value with a special inspect and co
     fruit > FRUITS.apple
     => true
 
+Generating enum attribute methods for your class:
+
+    class Car
+      attr_accessor :color
+      attr_enum :color, :COLORS, :red => 1, :black => 2
+    end
+    car = Car.new
+    car.color = :red
+    car.color
+    => Car::COLORS.red
+    car.color = "2"
+    car.color
+    => Car::COLORS.black
+    car.color.black?
+    => false
+
+If this is a defining attribute for the class, add `:qualifier => true` to generate question methods like so:
+
+    class Car
+      attr_accessor :color
+      attr_enum :color, :COLORS, { :qualifier => true }, :red => 1, :black => 2
+    end
+    car = Car.new
+    car.color = :red
+    car.red?
+    => true
+
 How the enum gets along with Rails, assuming the following model:
 
     # == Schema Info
@@ -93,7 +126,7 @@ Now the `color` column is always read and written using the enum value feature:
     Car.last.color.red?
     => true
 
-This also creates a `validates\_inclusion\_of` with `allow\_nil => true` to prevent having bad values.
+This also creates a `validates_inclusion_of` with `allow_nil => true` to prevent having bad values.
 
 Adding a `:scoped => true` option before the enum values allows automatic generation of scopes and question
 methods on the model as follows:
@@ -106,7 +139,7 @@ methods on the model as follows:
     Car.last.red?
     => true
 
-You can also use another class's enum for your class with enum\_column (including generated methods) like so:
+You can also use another class's enum for your class with enum\_column and attr\_enum (including generated methods) like so:
 
     class Motorcycle < ActiveRecord::Base
       enum_column :color, Car::COLORS, { :scoped => true }
@@ -137,10 +170,12 @@ The following will occur:
     => "Green Apple"
     FRUITS[2].t
     => "Orange Color"
-    Car::COLORS.red
+    Car::COLORS.red.t
     => "Shiny Red"
-    Car::COLORS.black
+    Car::COLORS.black.t
     => "Actually, white"
+    Car::COLORS.options # nice for options_for_select
+    => { "Shiny Red" => :red, "Actually, white" => :black }
 
 When the enum is given a parent, the class's name is used in the translation.
 If the translation is missing, it fallbacks to the translation without the class's name.
@@ -152,13 +187,13 @@ All enum names (usually CONSTANT\_LIKE) and parent class names are converted to 
 Since the `===` operator is called on the when value, this syntax cannot be used:
 
     case fruit
-      when :red then "This will never happen!"
+      when :apple then "This will never happen!"
     end
 
 The following should be used instead:
 
     case fruit
-      when FRUITS.red then "This is better..."
+      when FRUITS.apple then "This is better..."
     end
 
 This is because I had trouble overriding the `===` operator of the Symbol class.
@@ -169,3 +204,12 @@ Another limitation is the following:
     Car.where(:color => Car::COLORS.red) # good
 
 You may use the EnumValue object for anything, but don't get smart using the key.
+If the EnumValue doesn't work in a spot, use #name (in `options_for_select`) or #value (in `update_all`).
+
+## Also
+
+EnumValue also works well with [nil_or](https://github.com/toplex/nil_or):
+
+    fruit = FRUITS.apple
+    fruit.nil_or.t
+    => "Green Apple"
