@@ -28,8 +28,8 @@ class UsesEnumColumn < Hash # to allow setting 'attributes'
       { :where => attributes }
     end
     attr_reader :scopes
-    def scope(*attributes)
-      @scopes << attributes
+    def scope(name, value)
+      @scopes << [name, value.call]
     end
 
   end

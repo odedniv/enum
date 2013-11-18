@@ -18,7 +18,7 @@ module Enum::Helpers::EnumColumn
     if options[:scoped]
       # generating scopes and questioning methods
       e.by_name.each do |n, ev|
-        scope n, where(attr => ev)
+        scope n, -> { where(attr => ev) }
       end
     end
 

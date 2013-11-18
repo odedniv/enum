@@ -1,5 +1,4 @@
 source "http://rubygems.org"
 
-# Specify your gem's dependencies in commod.gemspec
+# Specify your gem's dependencies in yinum.gemspec
 gemspec
-gem 'rspec'
