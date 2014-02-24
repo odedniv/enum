@@ -41,6 +41,10 @@ class Enum
     Hash[map { |ev| [ev.t, ev.name] }]
   end
 
+  def title_options
+    Hash[map { |ev| [ev.name.to_s.titleize, ev.value] }]
+  end
+
   private
   def map_hash(hash)
     @by_name = {}
