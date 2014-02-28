@@ -19,7 +19,7 @@ module Enum::Helpers::EnumAttribute
       e = const_get(name_or_enum)
     end
     # attribute reader
-    define_method(attr) { v = super(); (v.nil? or not e.values.include?(v)) ? v : e[v] }
+    define_method(attr) { v = super(); (v.nil? or not e.values.include?(v)) ? Enum::EnumValue.new(e, v) : e[v] }
     # attribute writer
     define_method("#{attr}=") { |v| v.nil? ? super(v) : super(e[v]) }
 

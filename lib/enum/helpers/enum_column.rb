@@ -26,7 +26,7 @@ module Enum::Helpers::EnumColumn
   end
 end
 
-if defined?(ActiveRecord)
+if defined?(ActiveRecord::Base)
   class ActiveRecord::Base
     extend Enum::Helpers::EnumColumn
   end

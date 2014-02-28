@@ -1,7 +1,7 @@
 class Enum::EnumValue < BasicObject
   attr_reader :enum, :name, :value
 
-  def initialize(enum, name, value)
+  def initialize(enum, name = nil, value)
     @enum, @name, @value = enum, name, value
   end
 
@@ -10,18 +10,26 @@ class Enum::EnumValue < BasicObject
   end
 
   def inspect
+    return @value.inspect if @name.nil?
+
     "#{@enum.to_s}.#{@name}"
   end
 
   def ==(other)
+    return @value == other if @name.nil?
+
     @name == other or @value == other
   end
 
   def ===(other)
+    return @value === other if @name.nil?
+
     @name === other or @value === other
   end
 
   def t(options={})
+    return @value.t(options) if @name.nil?
+
     scope_without_klass = "enums.#{const_to_translation(@enum.name)}"
     if @enum.klass
       scope_with_klass = "enums.#{const_to_translation(@enum.klass.name)}.#{const_to_translation(@enum.name)}"

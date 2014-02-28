@@ -1,0 +1,1 @@
+* `attr_enum` reader always returns an EnumValue.
