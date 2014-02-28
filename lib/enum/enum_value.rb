@@ -27,27 +27,50 @@ class Enum::EnumValue < BasicObject
     @name === other or @value === other
   end
 
-  def t(options={})
+  def t(options = {})
     return @value.t(options) if @name.nil?
+    if not defined?(::I18n)
+      if @name.to_s.respond_to?(:titleize)
+        return @name.to_s.titleize
+      else
+        raise NotImplementedError, "I18n and String#titleize are not available"
+      end
+    end
 
     scope_without_klass = "enums.#{const_to_translation(@enum.name)}"
     if @enum.klass
       scope_with_klass = "enums.#{const_to_translation(@enum.klass.name)}.#{const_to_translation(@enum.name)}"
-      return "I18n not available: #{scope_with_klass}.#{@name}" unless defined?(::I18n)
 
-      ::I18n.t(@name,
-               # prefer scope with klass
-               options.reverse_merge(:scope => scope_with_klass,
-                                     :default => ::I18n.t(@name,
-                                                          # but if not, use without
-                                                          options.reverse_merge(:scope => scope_without_klass,
-                                                                                # but! if not, return scope with klass error
-                                                                                :default => ::I18n.t(@name,
-                                                                                                     options.reverse_merge(:scope => scope_with_klass))))))
+      ::I18n.t(
+        @name,
+        # prefer scope with klass
+        options.reverse_merge(
+          scope: scope_with_klass
+        ).merge( # our :default is a priority here
+          default: ::I18n.t(
+            @name,
+            # but if not, use without
+            options.reverse_merge(
+              scope: scope_without_klass,
+              # but! if not, return titleize or scope with klass error
+              default: @name.to_s.respond_to?(:titleize) ? @name.to_s.titleize : ::I18n.t(
+                @name,
+                options.reverse_merge(
+                  scope: scope_with_klass
+                )
+              )
+            )
+          )
+        )
+      )
     else
-      return "I18n not available: #{scope_without_klass}.#{@name}" unless defined?(::I18n)
-
-      ::I18n.t(@name, options.reverse_merge(:scope => scope_without_klass))
+      ::I18n.t(
+        @name,
+        options.reverse_merge(
+          scope: scope_without_klass,
+          default: (@name.to_s.titleize if @name.to_s.respond_to?(:titleize))
+        )
+      )
     end
   end
 
