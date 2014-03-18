@@ -44,32 +44,28 @@ class Enum::EnumValue < BasicObject
       ::I18n.t(
         @name,
         # prefer scope with klass
-        options.reverse_merge(
-          scope: scope_with_klass
-        ).merge( # our :default is a priority here
+        { scope: scope_with_klass
+        }.merge(options).merge( # our :default is a priority here
           default: ::I18n.t(
             @name,
             # but if not, use without
-            options.reverse_merge(
-              scope: scope_without_klass,
+            { scope: scope_without_klass,
               # but! if not, return titleize or scope with klass error
               default: @name.to_s.respond_to?(:titleize) ? @name.to_s.titleize : ::I18n.t(
                 @name,
-                options.reverse_merge(
-                  scope: scope_with_klass
-                )
+                { scope: scope_with_klass
+                }.merge(options)
               )
-            )
+            }.merge(options)
           )
         )
       )
     else
       ::I18n.t(
         @name,
-        options.reverse_merge(
-          scope: scope_without_klass,
+        { scope: scope_without_klass,
           default: (@name.to_s.titleize if @name.to_s.respond_to?(:titleize))
-        )
+        }.merge(options)
       )
     end
   end

@@ -75,12 +75,14 @@ def enum_columns_attribute_specs
 
       specify "name" do
         @record.color = :red
-        @record[:color].should be_enum_value and @record[:color].should be_red
+        @record[:color].should == 1
+        @record[:color].should_not respond_to(:enum_value?)
       end
 
       specify "value" do
         @record.color = 2
-        @record[:color].should be_enum_value and @record[:color].should be_blue
+        @record[:color].should == 2
+        @record[:color].should_not respond_to(:enum_value?)
       end
 
       specify "invalid" do

@@ -1,5 +1,11 @@
 require 'spec_helper'
 
+class I18n
+  def self.t(path, scope: nil, default: nil)
+    "#{scope}.#{path}"
+  end
+end
+
 describe Enum::EnumValue do
   subject { @enum }
 
@@ -8,7 +14,7 @@ describe Enum::EnumValue do
     # can't use subject @enum.red as it turns into a Fixnum
 
     specify { @enum.red.inspect.should == "MY_COLORS.red" }
-    specify { @enum.red.t.should == "I18n not available: enums.my_colors.red" }
+    specify { @enum.red.t.should == "enums.my_colors.red" }
   end # context "no parent"
 
   context "with parent" do
@@ -16,7 +22,7 @@ describe Enum::EnumValue do
     # can't use subject @enum.red as it turns into a Fixnum
 
     specify { @enum.red.inspect.should == "Object::MY_COLORS.red" }
-    specify { @enum.red.t.should == "I18n not available: enums.object.my_colors.red" }
+    specify { @enum.red.t.should == "enums.object.my_colors.red" }
   end # context "with parent"
 
   context "comparison" do

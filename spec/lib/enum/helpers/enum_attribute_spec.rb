@@ -51,16 +51,19 @@ def enum_attribute_specs
       specify "nil" do
         @record.color = nil
         @record[:color].should be_nil
+        @record[:color].should_not respond_to(:enum_value?)
       end
 
       specify "name" do
         @record.color = :red
-        @record[:color].should be_enum_value and @record[:color].should be_red
+        @record[:color] == 1
+        @record[:color].should_not respond_to(:enum_value?)
       end
 
       specify "value" do
         @record.color = 2
-        @record[:color].should be_enum_value and @record[:color].should be_blue
+        @record[:color] == 2
+        @record[:color].should_not respond_to(:enum_value?)
       end
 
       specify "invalid" do
