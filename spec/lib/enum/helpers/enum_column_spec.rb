@@ -71,18 +71,19 @@ def enum_columns_attribute_specs
       specify "nil" do
         @record.color = nil
         @record[:color].should be_nil
+        @record[:color].should_not be_enum_value
       end
 
       specify "name" do
         @record.color = :red
         @record[:color].should == 1
-        @record[:color].should_not respond_to(:enum_value?)
+        @record[:color].should_not be_enum_value
       end
 
       specify "value" do
         @record.color = 2
         @record[:color].should == 2
-        @record[:color].should_not respond_to(:enum_value?)
+        @record[:color].should_not be_enum_value
       end
 
       specify "invalid" do
@@ -94,16 +95,19 @@ def enum_columns_attribute_specs
       specify "nil" do
         @record[:color] = nil
         @record.color.should be_nil
+        @record.color.should be_enum_value
       end
 
       specify "value" do
         @record[:color] = 2
-        @record.color.should be_enum_value and @record.color.should be_blue
+        @record.color.should be_blue
+        @record.color.should be_enum_value
       end
 
       specify "invalid" do
         @record[:color] = 3
-        @record.color.should_not respond_to(:enum_value?) and @record.color.should == 3
+        @record.color.should == 3
+        @record.color.should be_enum_value
       end
     end # context "getter"
   end # context "attribute"

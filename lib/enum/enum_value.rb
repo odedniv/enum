@@ -1,3 +1,9 @@
+class Object
+  def enum_value?
+    false
+  end
+end
+
 class Enum::EnumValue < BasicObject
   attr_reader :enum, :name, :value
 
@@ -68,10 +74,6 @@ class Enum::EnumValue < BasicObject
         }.merge(options)
       )
     end
-  end
-
-  def methods
-    super + @value.methods
   end
 
   def method_missing(method, *args, &block)

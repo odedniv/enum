@@ -5,5 +5,10 @@
 
 **1.7.1**
 * Remove usage of `reverse_merge`, apparently doesn't exist in Ruby core.
-* `attr_enum`'s writer does not pass an EnumValue to the super.
+* `attr_enum`'s writer does not pass an `EnumValue` to the super.
 * Fix `EnumValue#t` specs (mocking `I18n`).
+
+**1.7.2**
+* Added `Object#enum_value?` to fix `attr_enum`'s writer, `BasicObject` does
+  not have `respond_to?`.
+* Fix specs that didn't catch above bug.

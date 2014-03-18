@@ -22,7 +22,7 @@ module Enum::Helpers::EnumAttribute
     define_method(attr) { v = super(); (v.nil? or not e.values.include?(v)) ? Enum::EnumValue.new(e, v) : e[v] }
     # attribute writer
     define_method("#{attr}=") do |v|
-      if v.respond_to?(:enum_value?) and v.enum_value?
+      if v.enum_value?
         super(v.value)
       elsif v.nil?
         super(v)
