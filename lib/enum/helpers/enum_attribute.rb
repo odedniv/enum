@@ -19,12 +19,16 @@ module Enum::Helpers::EnumAttribute
       e = const_get(name_or_enum)
     end
     # attribute reader
-    define_method(attr) { v = super(); (v.nil? or not e.values.include?(v)) ? Enum::EnumValue.new(e, v) : e[v] }
+    define_method(attr) do
+      v = super()
+      (ev = e.get(v)).nil? ? Enum::EnumValue.new(e, v) : ev
+    end
     # attribute writer
     define_method("#{attr}=") do |v|
-      if v.enum_value?
+      case
+      when v.enum_value?
         super(v.value)
-      elsif v.nil? or v == "" # might be received from forms
+      when v.nil?, v == "" # might be received from forms
         super(v)
       else
         super(e[v].value)
@@ -42,6 +46,7 @@ module Enum::Helpers::EnumAttribute
   end
 end
 
-class Object
-  extend Enum::Helpers::EnumAttribute
+# Every module or class shall have it
+class Module
+  include Enum::Helpers::EnumAttribute
 end

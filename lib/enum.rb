@@ -29,12 +29,17 @@ class Enum
   end
 
   def [](*name_or_values)
-    return name_or_values.map { |name_or_value| self[name_or_value] } if name_or_values.length > 1
+    return name_or_values.map { |name_or_value| get(name_or_value) } if name_or_values.length > 1
 
     name_or_value = name_or_values.first
-    ev = @by_name_s[name_or_value.to_s] || @by_value_s[name_or_value.to_s]
-    raise "#{inspect} does not know #{name_or_value.inspect}" if ev.nil?
-    ev
+    get(name_or_value) or raise "#{inspect} does not know #{name_or_value.inspect}"
+  end
+
+  def get(*name_or_values)
+    return name_or_values.map { |name_or_value| get(name_or_value) } if name_or_values.length > 1
+
+    name_or_value = name_or_values.first
+    @by_name_s[name_or_value.to_s] || @by_value_s[name_or_value.to_s]
   end
 
   def options

@@ -16,3 +16,7 @@
 **1.7.3**
 * `attr_enum`'s writer to accept empty string.
 * `attr_enum`'s qualifier option to use the object's `#send` rather than `#[]`.
+
+**1.7.4**
+* `attr_enum`'s reader allows super to hold the name etc.
+* Add `#attr_enum` and `#enum` only to modules and classes (not any instance).

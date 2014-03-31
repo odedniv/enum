@@ -6,6 +6,7 @@ module Enum::Helpers::EnumGenerator
   end
 end
 
-class Object
+# Every module or class shall have it
+class Module
   include Enum::Helpers::EnumGenerator
 end
