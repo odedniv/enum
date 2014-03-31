@@ -12,3 +12,7 @@
 * Added `Object#enum_value?` to fix `attr_enum`'s writer, `BasicObject` does
   not have `respond_to?`.
 * Fix specs that didn't catch above bug.
+
+**1.7.3**
+* `attr_enum`'s writer to accept empty string.
+* `attr_enum`'s qualifier option to use the object's `#send` rather than `#[]`.

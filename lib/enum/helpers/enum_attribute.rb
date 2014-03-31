@@ -24,7 +24,7 @@ module Enum::Helpers::EnumAttribute
     define_method("#{attr}=") do |v|
       if v.enum_value?
         super(v.value)
-      elsif v.nil?
+      elsif v.nil? or v == "" # might be received from forms
         super(v)
       else
         super(e[v].value)
@@ -34,7 +34,7 @@ module Enum::Helpers::EnumAttribute
     if options[:qualifier]
       # generating scopes and questioning methods
       e.by_name.each do |n, ev|
-        define_method("#{n}?") { self[attr] == ev }
+        define_method("#{n}?") { send(attr) == ev }
       end
     end
 

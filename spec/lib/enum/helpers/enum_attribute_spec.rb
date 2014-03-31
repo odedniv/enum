@@ -54,8 +54,20 @@ def enum_attribute_specs
         @record[:color].should_not be_enum_value
       end
 
-      specify "name" do
+      specify "empty string" do
+        @record.color = ""
+        @record[:color].should == ""
+        @record[:color].should_not be_enum_value
+      end
+
+      specify "symbol name" do
         @record.color = :red
+        @record[:color].should == 1
+        @record[:color].should_not be_enum_value
+      end
+
+      specify "string name" do
+        @record.color = 'red'
         @record[:color].should == 1
         @record[:color].should_not be_enum_value
       end
@@ -87,6 +99,12 @@ def enum_attribute_specs
       specify "invalid" do
         @record[:color] = 3
         @record.color.should == 3
+        @record.color.should be_enum_value
+      end
+
+      specify "invalid empty string" do
+        @record[:color] = ""
+        @record.color.should == ""
         @record.color.should be_enum_value
       end
     end # context "getter"
