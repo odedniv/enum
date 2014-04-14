@@ -43,7 +43,7 @@ class Enum
   end
 
   def options
-    Hash[map { |ev| [ev.t, ev.name] }]
+    Hash[map { |ev| [ev.t, ev] }]
   end
 
   private
