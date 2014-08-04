@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    yinum (1.7.4)
+    yinum (1.7.5)
 
 GEM
   remote: http://rubygems.org/

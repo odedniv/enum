@@ -7,7 +7,7 @@ module Enum::Helpers::EnumAttribute
   #   Generating attribute reader and writer to convert to EnumValue.
   #   If :qualifier => true, generates questioning methods for every name in the enum.
   # If given a enum name (a symbol) and hash, also creates the enum.
-  def attr_enum(attr, name_or_enum, options = {}, hash = nil)
+  def attr_yinum(attr, name_or_enum, options = {}, hash = nil)
     # the first hash is either options or the hash if the options are missing
     hash, options = options, {} unless name_or_enum.is_a?(Enum) or hash
     # generating or getting the enum
@@ -15,7 +15,7 @@ module Enum::Helpers::EnumAttribute
       e = name_or_enum
     else
       # generating the enum if the hash is not empty
-      enum name_or_enum, hash if hash.any?
+      yinum name_or_enum, hash if hash.any?
       e = const_get(name_or_enum)
     end
     # attribute reader
@@ -44,6 +44,7 @@ module Enum::Helpers::EnumAttribute
 
     e
   end
+  alias_method :attr_enum, :attr_yinum
 end
 
 # Every module or class shall have it

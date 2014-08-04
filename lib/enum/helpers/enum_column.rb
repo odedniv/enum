@@ -8,11 +8,11 @@ module Enum::Helpers::EnumColumn
   #   Creating a validation for the attribute so it must have valid enum values (allowing nil).
   #   If :scoped => true, generates scopes and questioning methods for every name in the enum.
   # If given a enum name (a symbol) and hash, also creates the enum.
-  def enum_column(attr, name_or_enum, options = {}, hash = nil)
+  def yinum_column(attr, name_or_enum, options = {}, hash = nil)
     # the first hash is either options or the hash if the options are missing
     hash, options = options, {} unless name_or_enum.is_a?(Enum) or hash
     # generating the enum attribute
-    e = attr_enum(attr, name_or_enum, options.merge(:qualifier => options[:scoped]), hash)
+    e = attr_yinum(attr, name_or_enum, options.merge(:qualifier => options[:scoped]), hash)
     # validation
     validates_inclusion_of attr, :in => e.values, :allow_nil => true
     if options[:scoped]
@@ -24,6 +24,7 @@ module Enum::Helpers::EnumColumn
 
     e
   end
+  alias_method :enum_column, :yinum_column
 end
 
 if defined?(ActiveRecord::Base)

@@ -20,3 +20,6 @@
 **1.7.4**
 * `attr_enum`'s reader allows super to hold the name etc.
 * Add `#attr_enum` and `#enum` only to modules and classes (not any instance).
+
+**1.7.5**
+* Alias helper methods to support Rails 4.1 overriding `::enum`.
