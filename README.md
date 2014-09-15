@@ -1,4 +1,4 @@
-# yinum
+# yinum [![Gem Version](https://badge.fury.io/rb/yinum.svg)](http://badge.fury.io/rb/yinum)
 
 A yummy straightforward implementation of an enum for Ruby (on Rails).
 
