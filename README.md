@@ -208,7 +208,7 @@ If the EnumValue doesn't work in a spot, use #name (in `options_for_select`) or 
 
 ## Also
 
-EnumValue also works well with [nil_or](https://github.com/toplex/nil_or):
+EnumValue also works well with [nil_or](https://github.com/odedniv/nil_or):
 
     fruit = FRUITS.apple
     fruit.nil_or.t
