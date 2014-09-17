@@ -12,7 +12,7 @@ COLORS.red == 1 && COLORS.red == :red
 => true
 ```
 
-## Getting started
+## Installation
 
 Add this line to your application's Gemfile:
 
