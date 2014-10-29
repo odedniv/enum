@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    yinum (1.8.1)
+    yinum (2.0.0)
 
 GEM
   remote: http://rubygems.org/
@@ -21,6 +21,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  nil_or (>= 2.0)
+  nil_or (~> 2.0)
   rspec (~> 2.0)
   yinum!

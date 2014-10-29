@@ -5,7 +5,7 @@ class Enum
   attr_reader :klass, :name, :by_name, :by_value
 
   def initialize(name, klass=nil, hash={})
-    klass, hash = nil, klass if klass.is_a?(Hash)
+    klass, hash = nil, klass unless klass.is_a?(Class)
     @name, @klass = name, klass
     map_hash(hash)
     generate_methods
@@ -48,12 +48,13 @@ class Enum
 
   private
   def map_hash(hash)
+    hash = Hash[hash.map { |n| [n, n.to_s] }] if hash.is_a?(Array)
     @by_name = {}
     @by_value = {}
     @by_name_s = {}
     @by_value_s = {}
     hash.each do |n, v|
-      n, v = v, n if v.is_a?(Symbol) or n.is_a?(Numeric)
+      n, v = v, n if v.is_a?(Symbol) and not n.is_a?(Symbol)
       raise "duplicate enum name #{n} for #{to_s}" if @by_name.has_key?(n)
       raise "duplicate enum value #{v} for #{to_s}.#{n}" if @by_value.has_key?(v)
       raise "value can't be nil for #{to_s}.#{n}" if v.nil?

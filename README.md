@@ -114,6 +114,8 @@ car.color
 car.color = "2"
 car.color
 => Car::COLORS.black
+car.color_without_enum
+=> "2"
 car.color.black?
 => false
 ```
@@ -219,6 +221,23 @@ When the enum is given a parent, the class's name is used in the translation.
 If the translation is missing, it fallbacks to the translation without the class's name.
 
 All enum names (usually CONSTANT\_LIKE) and parent class names are converted to snakecase.
+
+### Valueless Enums
+
+You can also define an enum without giving values, by giving an `Array` instead
+of a `Hash`.
+
+```ruby
+FRUITS = Enum.new(:FRUITS, [:apple, :orange])
+FRUITES.apple.value
+=> "apple"
+```
+
+This will give you validations on attributes and columns, without forcing you
+to keep track of an incremental value for the keys.
+
+Keep in mind that with columns it means that you'll need a string column type
+instead of an integer.
 
 ## Limitations
 

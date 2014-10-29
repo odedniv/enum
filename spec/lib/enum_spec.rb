@@ -33,4 +33,15 @@ describe Enum do
     its(:to_s)    { should == "Object::MY_COLORS" }
     its(:inspect) { should == "Object::MY_COLORS(:red => 1, :blue => 2)" }
   end
+
+  context "valueless" do
+    subject(:enum) { Enum.new(:MY_COLORS, [:red, :blue]) }
+
+    its(:to_s)    { should == "MY_COLORS" }
+    its(:inspect) { should == 'MY_COLORS(:red => "red", :blue => "blue")' }
+    its(:red)     { should == "red" }
+    specify { enum[:red].should == "red" }
+    specify { expect { enum[:black] }.to raise_error(StandardError) }
+    specify { enum[:red, :blue].should == ["red", "blue"] }
+  end
 end

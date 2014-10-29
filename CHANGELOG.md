@@ -1,3 +1,8 @@
+**2.0.0**
+* Use `#alias_attr` instead of calling super in `Enum::Helpers::EnumAttribute`.
+* Allow valueless enums (given with `Array` instead of `Hash`), that map to the
+  string of the key.
+
 **1.8.1**
 * Oops, merge 1.7.5 into 1.8.
 
