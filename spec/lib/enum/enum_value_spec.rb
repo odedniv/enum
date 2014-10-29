@@ -7,26 +7,24 @@ class I18n
 end
 
 describe Enum::EnumValue do
-  subject { @enum }
-
   context "no parent" do
-    before { @enum = Enum.new(:MY_COLORS, :red => 1, :blue => 2) }
-    # can't use subject @enum.red as it turns into a Fixnum
+    subject(:enum) { Enum.new(:MY_COLORS, :red => 1, :blue => 2) }
+    # can't use EnumValue in subject for some reason
 
-    specify { @enum.red.inspect.should == "MY_COLORS.red" }
-    specify { @enum.red.t.should == "enums.my_colors.red" }
-  end # context "no parent"
+    specify { enum.red.inspect.should == "MY_COLORS.red" }
+    specify { enum.red.t.should == "enums.my_colors.red" }
+  end
 
   context "with parent" do
-    before { @enum = Enum.new(:MY_COLORS, Object, :red => 1, :blue => 2) }
-    # can't use subject @enum.red as it turns into a Fixnum
+    subject(:enum) { Enum.new(:MY_COLORS, Object, :red => 1, :blue => 2) }
+    # can't use EnumValue in subject for some reason
 
-    specify { @enum.red.inspect.should == "Object::MY_COLORS.red" }
-    specify { @enum.red.t.should == "enums.object.my_colors.red" }
-  end # context "with parent"
+    specify { enum.red.inspect.should == "Object::MY_COLORS.red" }
+    specify { enum.red.t.should == "enums.object.my_colors.red" }
+  end
 
   context "comparison" do
-    before { @enum = Enum.new(:MY_COLORS, :red => 1, :blue => 2) }
+    subject(:enum) { Enum.new(:MY_COLORS, :red => 1, :blue => 2) }
 
     its(:red) { should == 1 }
     its(:blue) { should_not == 1 }
@@ -38,12 +36,21 @@ describe Enum::EnumValue do
     its(:blue) { should_not === :red }
     its(:red) { should be_red }
     its(:blue) { should_not be_red }
-    specify { @enum.red.object_id.should == @enum[:red].object_id }
-    specify { @enum.red.object_id.should == @enum[1].object_id }
-  end # context "comparison"
+    specify { enum.red.object_id.should == enum[:red].object_id }
+    specify { enum.red.object_id.should == enum[1].object_id }
+  end
 
   context "invalid" do
-    specify { expect { @enum[:green] }.to raise_error(StandardError) }
-    specify { expect { @enum[3] }.to raise_error(StandardError) }
-  end # context "invalid"
-end # describe EnumValue
+    subject(:enum) { Enum.new(:MY_COLORS, :red => 1, :blue => 2) }
+
+    specify { expect { enum[:green] }.to raise_error(StandardError) }
+    specify { expect { enum[3] }.to raise_error(StandardError) }
+  end
+
+  describe "#nil_or" do
+    subject(:enum) { Enum.new(:MY_COLORS, :red => 1, :blue => 2) }
+    # can't use EnumValue in subject for some reason
+
+    specify { enum.red.nil_or.should be_enum_value }
+  end
+end

@@ -104,6 +104,6 @@ class Enum::EnumValue < BasicObject
     require 'nil_or'
   rescue ::LoadError
   else
-    include ::NilOr
+    include ::NilOr::Methods
   end
 end
