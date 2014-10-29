@@ -23,28 +23,27 @@ module Enum::Helpers::EnumAttribute
     begin
       alias_method reader_without_enum, reader
     rescue NameError # reader does not exist
-    else
-      define_method(reader) do
-        v = send(reader_without_enum)
-        (ev = e.get(v)).nil? ? Enum::EnumValue.new(e, v) : ev
-      end
+      no_reader = true
+    end
+    define_method(reader) do
+      v = no_reader ? super() : send(reader_without_enum)
+      (ev = e.get(v)).nil? ? Enum::EnumValue.new(e, v) : ev
     end
     # attribute writer
     writer, writer_without_enum = :"#{attr}=", :"#{attr}_without_enum="
     begin
       alias_method writer_without_enum, writer
     rescue NameError # writer does not exist
-    else
-      define_method(writer) do |v|
-        case
-        when v.enum_value?
-          send(writer_without_enum, v.value)
-        when v.nil?, v == "" # might be received from forms
-          send(writer_without_enum, v)
-        else
-          send(writer_without_enum, e[v].value)
-        end
-      end
+      no_writer = true
+    end
+    define_method(writer) do |v|
+      v = case
+            when v.enum_value? then v.value
+            # might be received from forms
+            when v.nil?, v == "" then v
+            else e[v].value
+          end
+      no_writer ? super(v) : send(writer_without_enum, v)
     end
 
     if options[:qualifier]

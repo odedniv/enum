@@ -5,7 +5,7 @@ class Enum
   attr_reader :klass, :name, :by_name, :by_value
 
   def initialize(name, klass=nil, hash={})
-    klass, hash = nil, klass unless klass.is_a?(Class)
+    klass, hash = nil, klass unless klass.is_a?(Module)
     @name, @klass = name, klass
     map_hash(hash)
     generate_methods
