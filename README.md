@@ -233,8 +233,7 @@ FRUITES.apple.value
 => "apple"
 ```
 
-This will give you validations on attributes and columns, without forcing you
-to keep track of an incremental value for the keys.
+This will give you all the enum features (validations, translations, etc), without forcing you to keep track of an incremental value for the keys.
 
 Keep in mind that with columns it means that you'll need a string column type
 instead of an integer.
