@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Enum do
   describe "accessors" do
     subject(:enum) { Enum.new(:MY_COLORS, :red => 1, :blue => 2) }

@@ -1,4 +1,5 @@
 require 'enum/helpers/enum_generator'
+require 'generate_method'
 
 module Enum::Helpers::EnumAttribute
   include Enum::Helpers::EnumGenerator
@@ -18,38 +19,30 @@ module Enum::Helpers::EnumAttribute
       yinum name_or_enum, hash if hash.any?
       e = const_get(name_or_enum)
     end
-    # attribute reader
-    reader, reader_without_enum = attr, :"#{attr}_without_enum"
-    begin
-      alias_method reader_without_enum, reader
-    rescue NameError # reader does not exist
-      no_reader = true
-    end
-    define_method(reader) do
-      v = no_reader ? super() : send(reader_without_enum)
-      (ev = e.get(v)).nil? ? Enum::EnumValue.new(e, v) : ev
-    end
-    # attribute writer
-    writer, writer_without_enum = :"#{attr}=", :"#{attr}_without_enum="
-    begin
-      alias_method writer_without_enum, writer
-    rescue NameError # writer does not exist
-      no_writer = true
-    end
-    define_method(writer) do |v|
-      v = case
-            when v.enum_value? then v.value
-            # might be received from forms
-            when v.nil?, v == "" then v
-            else e[v].value
-          end
-      no_writer ? super(v) : send(writer_without_enum, v)
-    end
+    generate_methods overrider: :enum do
+      # attribute reader
+      reader, reader_without_enum = attr, :"#{attr}_without_enum"
+      define_method(reader) do
+        v = respond_to?(reader_without_enum) ? send(reader_without_enum) : super()
+        (ev = e.get(v)).nil? ? Enum::EnumValue.new(e, v) : ev
+      end
+      # attribute writer
+      writer, writer_without_enum = :"#{attr}=", :"#{attr}_without_enum="
+      define_method(writer) do |v|
+        v = case
+              when v.enum_value? then v.value
+              # might be received from forms
+              when v.nil?, v == "" then v
+              else e[v].value
+            end
+        respond_to?(writer_without_enum) ? send(writer_without_enum, v) : super(v)
+      end
 
-    if options[:qualifier]
-      # generating scopes and questioning methods
-      e.by_name.each do |n, ev|
-        define_method("#{n}?") { send(attr) == ev }
+      if options[:qualifier]
+        # generating scopes and questioning methods
+        e.by_name.each do |n, ev|
+          define_method("#{n}?") { send(attr) == ev }
+        end
       end
     end
 

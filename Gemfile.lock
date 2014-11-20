@@ -1,12 +1,14 @@
 PATH
   remote: .
   specs:
-    yinum (2.0.2)
+    yinum (2.1.0)
+      generate_method (~> 1.0)
 
 GEM
   remote: http://rubygems.org/
   specs:
     diff-lcs (1.2.5)
+    generate_method (1.0.0)
     nil_or (2.0.0)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)

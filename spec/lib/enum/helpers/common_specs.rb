@@ -18,51 +18,51 @@ shared_examples_for Enum::Helpers::EnumGenerator do
   its(:by_name) { should == { :red => 1, :blue => 2 } }
 end
 
-shared_examples_for Enum::Helpers::EnumAttribute do
+shared_examples_for Enum::Helpers::EnumAttribute do |attribute = :color|
   subject(:record) { klass.new }
-  before { record.instance_eval { @color = :unknown } }
+  before { record.instance_variable_set("@#{attribute}", :unknown) }
 
   describe "setter" do
     context "nil" do
-      before { record.color = nil }
-      specify { record.instance_eval { @color }.should be_nil }
-      specify { record.instance_eval { @color }.should_not be_enum_value }
+      before { record.send(:"#{attribute}=", nil) }
+      specify { record.instance_variable_get("@#{attribute}").should be_nil }
+      specify { record.instance_variable_get("@#{attribute}").should_not be_enum_value }
     end
 
     context "name" do
-      before { record.color = :red }
-      specify { record.instance_eval { @color }.should == 1 }
-      specify { record.instance_eval { @color }.should_not be_enum_value }
+      before { record.send(:"#{attribute}=", :red) }
+      specify { record.instance_variable_get("@#{attribute}").should == 1 }
+      specify { record.instance_variable_get("@#{attribute}").should_not be_enum_value }
     end
 
     context "value" do
-      before { record.color = 2 }
-      specify { record.instance_eval { @color }.should == 2 }
-      specify { record.instance_eval { @color }.should_not be_enum_value }
+      before { record.send(:"#{attribute}=", 2) }
+      specify { record.instance_variable_get("@#{attribute}").should == 2 }
+      specify { record.instance_variable_get("@#{attribute}").should_not be_enum_value }
     end
 
     specify "invalid" do
-      expect { @record.color = 3 }.to raise_error(StandardError)
+      expect { record.send(:"#{attribute}=", 3) }.to raise_error(StandardError, /does not know/)
     end
   end
 
   describe "getter" do
     context "nil" do
-      before { record.instance_eval { @color = nil } }
-      specify { record.color.should be_nil }
-      specify { record.color.should be_enum_value }
+      before { record.instance_variable_set("@#{attribute}", nil) }
+      specify { record.send(attribute).should be_nil }
+      specify { record.send(attribute).should be_enum_value }
     end
 
     context "value" do
-      before { record.instance_eval { @color = 2 } }
-      specify { record.color.should be_blue }
-      specify { record.color.should be_enum_value }
+      before { record.instance_variable_set("@#{attribute}", 2) }
+      specify { record.send(attribute).should be_blue }
+      specify { record.send(attribute).should be_enum_value }
     end
 
     context "invalid" do
-      before { record.instance_eval { @color = 3 } }
-      specify { record.color.should == 3 }
-      specify { record.color.should be_enum_value }
+      before { record.instance_variable_set("@#{attribute}", 3) }
+      specify { record.send(attribute).should == 3 }
+      specify { record.send(attribute).should be_enum_value }
     end
   end
 end

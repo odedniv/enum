@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 class I18n
   def self.t(path, scope: nil, default: nil)
     "#{scope}.#{path}"

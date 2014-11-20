@@ -104,7 +104,11 @@ Generating enum attribute methods for your class:
 
 ```ruby
 class Car
-  attr_accessor :color
+  module Colorful
+    attr_accessor :color # using attr_accessor on Car will create methods with higher priority than attr_enum.
+  end
+  include Colorful
+
   attr_enum :color, :COLORS, :red => 1, :black => 2
 end
 car = Car.new
@@ -124,7 +128,11 @@ If this is a defining attribute for the class, add `:qualifier => true` to gener
 
 ```ruby
 class Car
-  attr_accessor :color
+  module Colorful
+    attr_accessor :color # using attr_accessor on Car will create methods with higher priority than attr_enum.
+  end
+  include Colorful
+
   attr_enum :color, :COLORS, { :qualifier => true }, :red => 1, :black => 2
 end
 car = Car.new

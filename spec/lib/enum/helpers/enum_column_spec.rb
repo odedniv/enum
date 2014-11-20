@@ -1,4 +1,3 @@
-require 'spec_helper'
 require 'lib/enum/helpers/common_specs'
 
 class EnumColumnUser < EnumUserBase

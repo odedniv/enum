@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Enum::Helpers::EnumGenerator do
   let(:klass) { EnumUserBase.create_class }
   before { klass.enum(:COLORS, :red => 1, :blue => 2) }

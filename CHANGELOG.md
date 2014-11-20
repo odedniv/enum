@@ -1,3 +1,7 @@
+**2.1.0**
+* Use generate_method in attr_enum. This is backward incompatible for using
+  attr_enum on accessors defined on the class level. Use modules.
+
 **2.0.0**
 * Use `#alias_attr` instead of calling super in `Enum::Helpers::EnumAttribute`.
 * Allow valueless enums (given with `Array` instead of `Hash`), that map to the
