@@ -274,7 +274,12 @@ Car.where(:color => Car::COLORS.red) # good
 ```
 
 You may use the EnumValue object for anything, but don't get smart using the key.
-If the EnumValue doesn't work in a spot, use #name (in `options_for_select`) or #value (in `update_all`).
+
+If the EnumValue proxy doesn't work in a specific situation (when the gem is not following the [duck typing](http://en.wikipedia.org/wiki/Duck_typing) rules), you can use `#value` (in `update_all` or `validates_uniqueness_of`):
+
+```ruby
+Car.update_all(:color => Car::COLORS.red.value)
+```
 
 ## Also
 
