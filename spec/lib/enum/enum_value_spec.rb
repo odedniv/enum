@@ -25,13 +25,21 @@ describe Enum::EnumValue do
     subject(:enum) { Enum.new(:MY_COLORS, :red => 1, :blue => 2) }
 
     its(:red) { should == 1 }
+    its(:red) { should == '1' }
     its(:blue) { should_not == 1 }
+    its(:blue) { should_not == '1' }
     its(:red) { should == :red }
+    its(:red) { should == 'red' }
     its(:blue) { should_not == :red }
+    its(:blue) { should_not == 'red' }
     its(:red) { should === 1 }
+    its(:red) { should === '1' }
     its(:blue) { should_not === 1 }
+    its(:blue) { should_not === '1' }
     its(:red) { should === :red }
+    its(:red) { should === 'red' }
     its(:blue) { should_not === :red }
+    its(:blue) { should_not === 'red' }
     its(:red) { should be_red }
     its(:blue) { should_not be_red }
     specify { enum.red.object_id.should == enum[:red].object_id }

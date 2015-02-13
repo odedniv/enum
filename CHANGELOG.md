@@ -1,3 +1,6 @@
+**2.2.0**
+* `EnumValue` compares to strings.
+
 **2.1.0**
 * Use generate_method in attr_enum. This is backward incompatible for using
   attr_enum on accessors defined on the class level. Use modules.

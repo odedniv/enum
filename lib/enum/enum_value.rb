@@ -9,6 +9,8 @@ class Enum::EnumValue < BasicObject
 
   def initialize(enum, name = nil, value)
     @enum, @name, @value = enum, name, value
+    @name_s = @name.to_s if @name
+    @value_s = @value.to_s
   end
 
   def enum_value?
@@ -18,26 +20,26 @@ class Enum::EnumValue < BasicObject
   def inspect
     return @value.inspect if @name.nil?
 
-    "#{@enum.to_s}.#{@name}"
+    "#{@enum.to_s}.#{@name_s}"
   end
 
   def ==(other)
-    return @value == other if @name.nil?
+    return true if @value == other or @value_s == other
 
-    @name == other or @value == other
+    not @name.nil? and (@name == other or @name_s == other)
   end
 
   def ===(other)
-    return @value === other if @name.nil?
+    return true if @value === other or @value_s === other
 
-    @name === other or @value === other
+    not @name.nil? and (@name === other or @name_s === other)
   end
 
   def t(options = {})
     return @value.t(options) if @name.nil?
     if not defined?(::I18n)
-      if @name.to_s.respond_to?(:titleize)
-        return @name.to_s.titleize
+      if @name_s.respond_to?(:titleize)
+        return @name_s.titleize
       else
         raise NotImplementedError, "I18n and String#titleize are not available"
       end
@@ -57,7 +59,7 @@ class Enum::EnumValue < BasicObject
             # but if not, use without
             { scope: scope_without_klass,
               # but! if not, return titleize or scope with klass error
-              default: @name.to_s.respond_to?(:titleize) ? @name.to_s.titleize : ::I18n.t(
+              default: @name_s.respond_to?(:titleize) ? @name_s.titleize : ::I18n.t(
                 @name,
                 { scope: scope_with_klass
                 }.merge(options)
@@ -70,7 +72,7 @@ class Enum::EnumValue < BasicObject
       ::I18n.t(
         @name,
         { scope: scope_without_klass,
-          default: (@name.to_s.titleize if @name.to_s.respond_to?(:titleize))
+          default: (@name_s.titleize if @name_s.respond_to?(:titleize))
         }.merge(options)
       )
     end
