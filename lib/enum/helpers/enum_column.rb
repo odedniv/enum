@@ -14,7 +14,7 @@ module Enum::Helpers::EnumColumn
     # generating the enum attribute
     e = attr_yinum(attr, name_or_enum, options.merge(:qualifier => options[:scoped]), hash)
     # validation
-    validates_inclusion_of attr, :in => e.values, :allow_nil => true
+    validates_inclusion_of attr, :in => e, :allow_nil => true
     if options[:scoped]
       # generating scopes and questioning methods
       e.by_name.each do |n, ev|

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    yinum (2.2.0)
+    yinum (2.2.1)
       generate_method (~> 1.0)
 
 GEM
@@ -26,3 +26,6 @@ DEPENDENCIES
   nil_or (~> 2.0)
   rspec (~> 2.0)
   yinum!
+
+BUNDLED WITH
+   1.14.6
