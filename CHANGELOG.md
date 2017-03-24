@@ -1,4 +1,7 @@
 **2.2.1**
+* Fix ==(=) for Ruby 2.4.
+
+**2.2.1**
 * Fix `validates_inclusion_of` for Ruby 2.4.
 
 **2.2.0**

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    yinum (2.2.1)
+    yinum (2.2.2)
       generate_method (~> 1.0)
 
 GEM

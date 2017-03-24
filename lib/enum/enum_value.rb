@@ -24,12 +24,14 @@ class Enum::EnumValue < BasicObject
   end
 
   def ==(other)
+    return true if super
     return true if @value == other or @value_s == other
 
     not @name.nil? and (@name == other or @name_s == other)
   end
 
   def ===(other)
+    return true if self == other or super
     return true if @value === other or @value_s === other
 
     not @name.nil? and (@name === other or @name_s === other)
