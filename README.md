@@ -121,7 +121,7 @@ car.color
 car.color_without_enum
 => "2"
 car.color.black?
-=> false
+=> true
 ```
 
 If this is a defining attribute for the class, add `:qualifier => true` to generate question methods like so:
