@@ -92,6 +92,10 @@ class Enum::EnumValue < BasicObject
     end
   end
 
+  def respond_to_missing?(method, *)
+    method.to_s == 'to_ary' ? false : super
+  end
+
   private
   def const_to_translation(name)
     # From Rails' ActiveSupport String#underscore
